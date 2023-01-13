@@ -1,32 +1,29 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const [error, setError] = useState("");
-
-  // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("nice");
-
-    //   fetch('/login', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email, password }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.error) {
-    //         setError(data.error);
-    //       } else {
-    //         sessionStorage.setItem('email', data.email);
-    //         sessionStorage.setItem('name', data.name);
-    //         window.location.replace('/');
-    //       }
-    //     });
+    try {
+      const response = await axios.post("http://localhost:8080/account/login", {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        alert("Successfully logged in");
+        localStorage.setItem("userId", response.data.userId);
+        navigate("/");
+      } else {
+        alert("Not able to create an account");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -36,7 +33,7 @@ export const Login = () => {
         onSubmit={handleSubmit}
       >
         <h1 className="text-2xl font-bold text-center mb-4">Log in</h1>
-        {error && <p className="error text-red-500">{error}</p>}
+        {/* {error && <p className="error text-red-500">{error}</p>} */}
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -86,7 +83,7 @@ export const Login = () => {
         </button>
         <div className="text-center mt-4 text-sm">
           <Link
-            to="/createaccount"
+            to="/createUser"
             className="text-indigo-600 hover:text-indigo-500"
           >
             Create an account?

@@ -1,31 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState();
+  const [bankDetails, setBankDetails] = useState();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userId = localStorage.getItem("userId");
+      if (userId === null) {
+        navigate("/login");
+      } else {
+        try {
+          const response = await axios.post(
+            "http://localhost:8080/account/getCustomer",
+            { userId }
+          );
+          const details = {
+            name: response.data.name,
+            address: response.data.address,
+            email: response.data.email,
+            phone: response.data.phone,
+          };
+          setUserDetails(details);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    getUser();
+  }, [navigate]);
+
+  useEffect(() => {
+    const getBankAccount = async () => {
+      const userId = localStorage.getItem("userId");
+      if (userId !== null) {
+        try {
+          const response = await axios.post(
+            "http://localhost:8080/getCustomerAccount",
+            { userId }
+          );
+
+          if (response.status === 200) {
+            const details = {
+              accountNumber: response.data.accountNumber,
+              accountType: response.data.accountType,
+              balance: response.data.balance,
+              name: response.data.name,
+            };
+            setBankDetails(details);
+          } else {
+            navigate("/createAccount");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+
+    getBankAccount();
+  });
+
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <div className="h-[40rem]">
-      <nav className="bg-gray-800 p-4 flex justify-between items-center">
-        <div className="text-white font-medium">Bank App</div>
-        <div className="text-white font-medium">
-          <a href="/">Home</a>
-          <a href="/create-transaction" className="ml-4">
-            Create Transaction
-          </a>
-          <a href="/logout" className="ml-4">
-            Logout
-          </a>
-        </div>
-      </nav>
+      <Header handleLogout={handleLogout} />
       <div className="h-full flex justify-center items-center">
         <div className="bg-white rounded-lg p-6">
           <h1 className="text-lg font-medium text-indigo-600">
-            Your Bank Account
+            Hi! {userDetails?.name}
           </h1>
           <div className="mt-4">
             <label className="block text-sm font-medium leading-5 text-gray-700">
               Account Number:
             </label>
             <div className="mt-1">
-              <p className="text-gray-600">1234567890</p>
+              <p className="text-gray-600">{bankDetails?.accountNumber}</p>
             </div>
           </div>
           <div className="mt-4">
@@ -41,7 +100,7 @@ const Home = () => {
               Balance:
             </label>
             <div className="mt-1">
-              <p className="text-gray-600">$0</p>
+              <p className="text-gray-600">${bankDetails?.balance}</p>
             </div>
           </div>
           <div className="mt-6">
@@ -51,9 +110,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <footer className="bg-gray-800 p-4 text-center text-white">
-        Copyright © 2022 Bank App
-      </footer>
+      <Footer />
     </div>
   );
 };
