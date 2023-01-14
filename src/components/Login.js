@@ -15,7 +15,7 @@ export const Login = () => {
         password,
       });
       if (response.status === 200) {
-        alert("Successfully logged in");
+        console.log("Successfully logged in");
         localStorage.setItem("userId", response.data.userId);
         navigate("/");
       } else {

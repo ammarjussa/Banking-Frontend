@@ -57,6 +57,7 @@ const Home = () => {
             navigate("/createAccount");
           }
         } catch (err) {
+          navigate("/createAccount");
           console.log(err);
         }
       }
@@ -104,7 +105,14 @@ const Home = () => {
             </div>
           </div>
           <div className="mt-6">
-            <button className="w-full py-2 px-4 font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-800">
+            <button
+              className="w-full py-2 px-4 font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-800"
+              onClick={() =>
+                navigate("/create-transaction", {
+                  state: { senderAccountNumber: bankDetails?.accountNumber },
+                })
+              }
+            >
               Create Transaction
             </button>
           </div>

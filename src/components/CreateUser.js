@@ -25,7 +25,7 @@ const CreateUser = () => {
       );
 
       if (response.status === 200) {
-        alert("Successfully created the account");
+        console.log("Successfully created the account");
         navigate("/login");
       } else {
         alert("Not able to create an account");
