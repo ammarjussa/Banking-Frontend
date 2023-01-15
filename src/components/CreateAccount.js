@@ -5,7 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const CreateBankAccount = () => {
-  const [accountType, setAccountType] = useState("");
+  const [accountType, setAccountType] = useState(""); 
   const navigate = useNavigate();
 
   const handleAccountTypeChange = (event) => {
@@ -14,6 +14,7 @@ const CreateBankAccount = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     const userId = localStorage.getItem("userId");
     try {
       const response = await axios.post("http://localhost:8080/createAccount", {
@@ -41,7 +42,7 @@ const CreateBankAccount = () => {
   return (
     <div>
       <Header handleLogout={handleLogout} />
-      <div className="flex justify-center items-center h-[40rem] bg-gray-200">
+      <div className="flex justify-center items-center h-[41rem] bg-gray-200">
         <form
           onSubmit={handleSubmit}
           className="bg-white shadow-md rounded p-10 mb-4"

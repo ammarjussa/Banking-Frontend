@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
   const navigate = useNavigate();
@@ -9,9 +9,20 @@ const CreateUser = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (
+      name === "" ||
+      address === "" ||
+      phone === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      setError("Please fill all the fields");
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:8080/account/signup",
@@ -44,6 +55,11 @@ const CreateUser = () => {
         <h1 className="text-2xl font-bold text-center mb-4">
           Create an account
         </h1>
+        {error && (
+          <p className="error text-red-500 text-center font-bold text-xs">
+            {error}
+          </p>
+        )}
         <div className="mt-4">
           <label
             className="block text-sm font-medium leading-5 text-gray-700"
@@ -142,6 +158,11 @@ const CreateUser = () => {
           >
             Create account
           </button>
+        </div>
+        <div className="text-center mt-4 text-sm">
+          <Link to="/login" className="text-indigo-600 hover:text-indigo-500">
+            Already a user?
+          </Link>
         </div>
       </form>
     </div>

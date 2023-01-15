@@ -5,6 +5,7 @@ import CreateUser from "./components/CreateUser";
 import Home from "./components/Home";
 import CreateTransaction from "./components/CreateTransaction";
 import CreateBankAccount from "./components/CreateAccount";
+import Transactions from "./components/Transactions";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/createUser" element={<CreateUser />} />
       <Route path="/create-transaction" element={<CreateTransaction />} />
       <Route path="/createAccount" element={<CreateBankAccount />} />
+      <Route path="/transactions" element={<Transactions />} />
     </Routes>
   );
 }

@@ -6,9 +6,15 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (email === "" || password === "") {
+      setError("Please fill all the fields");
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:8080/account/login", {
         email,
@@ -33,7 +39,11 @@ export const Login = () => {
         onSubmit={handleSubmit}
       >
         <h1 className="text-2xl font-bold text-center mb-4">Log in</h1>
-        {/* {error && <p className="error text-red-500">{error}</p>} */}
+        {error && (
+          <p className="error text-red-500 text-center font-bold text-xs">
+            {error}
+          </p>
+        )}
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"

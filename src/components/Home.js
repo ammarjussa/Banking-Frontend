@@ -53,6 +53,8 @@ const Home = () => {
               name: response.data.name,
             };
             setBankDetails(details);
+            localStorage.setItem("accountNumber", details.accountNumber);
+            localStorage.setItem("balance", details.balance);
           } else {
             navigate("/createAccount");
           }
@@ -73,35 +75,41 @@ const Home = () => {
   };
 
   return (
-    <div className="h-[40rem]">
+    <div className="h-[41rem]">
       <Header handleLogout={handleLogout} />
-      <div className="h-full flex justify-center items-center">
-        <div className="bg-white rounded-lg p-6">
-          <h1 className="text-lg font-medium text-indigo-600">
-            Hi! {userDetails?.name}
+      <div className="h-full flex justify-center items-center bg-gray-200">
+        <div className="bg-white rounded-lg p-20 flex-col items-center justify-center">
+          <h1 className="text-2xl font-bold text-center mb-4">
+            Welcome {userDetails?.name}!
           </h1>
           <div className="mt-4">
-            <label className="block text-sm font-medium leading-5 text-gray-700">
+            <label className="block text-sm font-medium leading-5 text-center text-gray-700">
               Account Number:
             </label>
             <div className="mt-1">
-              <p className="text-gray-600">{bankDetails?.accountNumber}</p>
+              <p className="text-gray-600 text-center">
+                {bankDetails?.accountNumber}
+              </p>
             </div>
           </div>
           <div className="mt-4">
-            <label className="block text-sm font-medium leading-5 text-gray-700">
-              Bank Name:
+            <label className="block text-sm font-medium leading-5 text-gray-700 text-center">
+              Account Type:
             </label>
             <div className="mt-1">
-              <p className="text-gray-600">Example Bank</p>
+              <p className="text-gray-600 text-center">
+                {bankDetails?.accountType}
+              </p>
             </div>
           </div>
           <div className="mt-4">
-            <label className="block text-sm font-medium leading-5 text-gray-700">
+            <label className="block text-sm font-medium leading-5 text-gray-700 text-center">
               Balance:
             </label>
             <div className="mt-1">
-              <p className="text-gray-600">${bankDetails?.balance}</p>
+              <p className="text-gray-600 text-center">
+                ${bankDetails?.balance}
+              </p>
             </div>
           </div>
           <div className="mt-6">
